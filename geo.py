@@ -27,7 +27,8 @@ class MainHandler(tornado.web.RequestHandler):
             if ip != "127.0.0.1":
                 print(ip)
                 coordinates = json.loads(requests.request("GET", f"http://api.ipstack.com/{ip}?access_key={api_key}").text)
-                data.append(coordinates)
+                if coordinates['latitude'] and coordinates['longitude']:
+                    data.append(coordinates)
 
         self.render("geo.html", markers=data)
 
