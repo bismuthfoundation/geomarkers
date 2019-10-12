@@ -1,5 +1,5 @@
 import requests, json, socks
-from bisbasic.connections import send, receive
+from bismuthclient.bismuthclient import rpcconnections
 
 import tornado.ioloop
 import tornado.web
@@ -10,13 +10,8 @@ with open('key.secret', 'r') as f: #get yours here: https://developers.google.co
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
 
-
-        s = socks.socksocket()
-        s.settimeout(10)
-        s.connect(("127.0.0.1", 5658))
-        send(s, "statusjson")
-        response = receive(s)
-        s.close()
+        connection._send("statusjson")
+        response = connection._receive()
 
         ips = response['connections_list']
 
@@ -40,6 +35,7 @@ def make_app():
     ])
 
 if __name__ == "__main__":
+    connection = rpcconnections.Connection(("127.0.0.1", 5658))
     app = make_app()
     app.listen(5493)
     tornado.ioloop.IOLoop.current().start()
