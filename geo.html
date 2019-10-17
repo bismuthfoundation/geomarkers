@@ -40,7 +40,7 @@
 var points =
       [
       {%for item in markers%}
-        ['Node',
+        ['{{item['ip']}}',
         {{item['latitude']}},
         {{item['longitude']}},
         0],

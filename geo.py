@@ -35,6 +35,7 @@ class Updater():
             if ip != "127.0.0.1":
                 print(ip)
                 coordinates = json.loads(requests.request("GET", f"http://api.ipstack.com/{ip}?access_key={api_key}").text)
+                coordinates['ip'] = ip
                 if coordinates['latitude'] and coordinates['longitude']:
                     self.data.append(coordinates)
 
