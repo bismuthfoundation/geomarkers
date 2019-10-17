@@ -7,6 +7,13 @@ import tornado.web
 with open('key.secret', 'r') as f: #get yours here: https://developers.google.com/maps/documentation/javascript/marker-clustering
     api_key = f.read()
 
+def present(list_of_dicts, ip):
+    for d in list_of_dicts:
+        if d["ip"] == ip:
+            return True
+    else:
+        return False
+
 class ThreadedClient(threading.Thread):
     def __init__(self, updater):
         threading.Thread.__init__(self)
@@ -39,14 +46,14 @@ class Updater():
         print("IPs:",ips)
 
         for ip in ips:
-            if ip != "127.0.0.1":
+            if ip != "127.0.0.1" and not present(self.data, ip):
                 print(ip)
                 coordinates = json.loads(requests.request("GET", f"http://api.ipstack.com/{ip}?access_key={api_key}").text)
                 coordinates['ip'] = ip
                 coordinates['added'] = time.time()
-                if coordinates not in self.data:
-                    if coordinates['latitude'] and coordinates['longitude']:
-                        self.data.append(coordinates)
+
+                if coordinates['latitude'] and coordinates['longitude']:
+                    self.data.append(coordinates)
 
         print("Update finished")
 
