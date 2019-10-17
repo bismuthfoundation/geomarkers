@@ -44,8 +44,9 @@ class Updater():
                 coordinates = json.loads(requests.request("GET", f"http://api.ipstack.com/{ip}?access_key={api_key}").text)
                 coordinates['ip'] = ip
                 coordinates['added'] = time.time()
-                if coordinates['latitude'] and coordinates['longitude']:
-                    self.data.append(coordinates)
+                if coordinates not in self.data:
+                    if coordinates['latitude'] and coordinates['longitude']:
+                        self.data.append(coordinates)
 
         print("Update finished")
 
