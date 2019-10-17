@@ -20,9 +20,9 @@ class ThreadedClient(threading.Thread):
 class Updater():
     def __init__(self):
         self.data = []
-        self.connection = rpcconnections.Connection(("127.0.0.1", 5658))
 
     def update(self):
+        self.connection = rpcconnections.Connection(("127.0.0.1", 5658))
         print("Update started")
         self.connection._send("statusjson")
         response = self.connection._receive()
