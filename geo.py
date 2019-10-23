@@ -22,8 +22,8 @@ class ThreadedClient(threading.Thread):
        while True:
            updater.update()
            updater.clean()
-           print("Waiting 5 minutes")
-           time.sleep(360)
+           print("Waiting one hour")
+           time.sleep(3600)
 
 class Updater():
     def __init__(self):
