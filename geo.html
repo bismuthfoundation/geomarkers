@@ -33,11 +33,40 @@
 <div id="map"></div>
 
 <script type="text/javascript">
+var node = L.icon({
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [0, -30],
+    shadowSize: [68, 95],
+    shadowAnchor: [22, 94],
+    iconUrl: 'leaflet/images/node.png',
+});
 
-var points =
+var hypernode = L.icon({
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [0, -30],
+    shadowSize: [68, 95],
+    shadowAnchor: [22, 94],
+    iconUrl: 'leaflet/images/hn.png',
+});
+
+var points_nodes =
       [
-      {%for item in markers%}
+      {%for item in nodes%}
         ['{{item['ip']}}',
+        'Node',
+        {{item['latitude']}},
+        {{item['longitude']}},
+        0],
+      {%end%}
+      ];
+
+var points_hns =
+      [
+      {%for item in hypernodes%}
+        ['{{item['ip']}}',
+        'Hypernode',
         {{item['latitude']}},
         {{item['longitude']}},
         0],
@@ -49,9 +78,16 @@ var map = L.map('map').setView([20, 0], 2);
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
 
 
-for (var i = 0; i < points.length; i++) {
-        L.marker([points[i][1], points[i][2]]).bindPopup(points[i][0]).addTo(map);
+for (var i = 0; i < points_nodes.length; i++) {
+        L.marker([points_nodes[i][2], points_nodes[i][3]], {icon: node})
+        .bindPopup(points_nodes[i][0] + " " + points_nodes[i][1]).addTo(map);
     }
+
+for (var i = 0; i < points_hns.length; i++) {
+        L.marker([points_hns[i][2], points_hns[i][3]], {icon: hypernode})
+        .bindPopup(points_hns[i][0] + " " + points_hns[i][1]).addTo(map);
+    }
+
 
 
 </script>
